@@ -15,9 +15,8 @@ namespace WpfApp1.ViewModels
         public string Title { get; set; }
         public string NewTodo { get; set; }
         public ObservableCollection<TodoItem> Todos { get; set; }
-        public ICommand AddTodoCommand { get; set; }   
+        public ICommand AddTodoCommand { get; set; }
 
-    
         public MainViewModel() {
             Title = "Personal DashBoard";
 
@@ -41,6 +40,6 @@ namespace WpfApp1.ViewModels
                 });
             }
         }
-        
+
     }
 }
