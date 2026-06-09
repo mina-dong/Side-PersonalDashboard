@@ -39,7 +39,8 @@
 
         <ListBox Grid.Row="2"
              Margin="10"
-             ItemsSource="{Binding Todos}">
+             ItemsSource="{Binding Todos}"
+             SelectedItem="{Binding SelectedTodo}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -48,22 +49,25 @@
 
                         <TextBlock Text="{Binding Title}"
                            Margin="10,0,0,0">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
 
-                                    <DataTrigger Binding="{Binding IsDone}" Value="True">
-                                        <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                        <Setter Property="Opacity" Value="0.5"/>
-                                    </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
+                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                        </DataTrigger>
 
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
                         </TextBlock>
 
-
-
+                        <Button Content="삭제"
+                            Margin="10,0,0,0"
+                            Command="{Binding DataContext.DelTodoCommand,
+                                      RelativeSource={RelativeSource AncestorType=Window}}"
+                            CommandParameter="{Binding}" />
 
                     </StackPanel>
                 </DataTemplate>

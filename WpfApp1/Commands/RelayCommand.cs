@@ -5,9 +5,9 @@ namespace WpfApp1.Commands
 {
     public class RelayCommand : ICommand
     {
-        private readonly Action _execute;
+        private readonly Action<object> _execute;
 
-        public RelayCommand(Action execute)
+        public RelayCommand(Action<object> execute)
         {
             _execute = execute;
         }
@@ -21,7 +21,7 @@ namespace WpfApp1.Commands
 
         public void Execute(object parameter)
         {
-            _execute();
+            _execute(parameter);
         }
     }
 }

@@ -16,6 +16,8 @@ namespace WpfApp1.ViewModels
         public string NewTodo { get; set; }
         public ObservableCollection<TodoItem> Todos { get; set; }
         public ICommand AddTodoCommand { get; set; }
+        public ICommand DelTodoCommand {  get; set; }
+        public TodoItem SelectedTodo { get; set; }
 
         public MainViewModel() {
             Title = "Personal DashBoard";
@@ -27,10 +29,11 @@ namespace WpfApp1.ViewModels
             };
 
             AddTodoCommand = new RelayCommand(AddTodo);
+            DelTodoCommand = new RelayCommand(DelTodo);
 
         }
 
-        private void AddTodo()
+        private void AddTodo(object parameter)
         {
             if (!string.IsNullOrWhiteSpace(NewTodo))
             {
@@ -38,6 +41,16 @@ namespace WpfApp1.ViewModels
                 {
                     Title = NewTodo
                 });
+            }
+        }
+
+        private void DelTodo(object parameter)
+        {
+            TodoItem todo = parameter as TodoItem;
+
+            if (todo != null)
+            {
+                Todos.Remove(todo);
             }
         }
 
