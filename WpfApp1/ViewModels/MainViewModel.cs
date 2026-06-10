@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using WpfApp1.Models;
 using System.Windows.Input;
 using WpfApp1.Commands;
+using WpfApp1.Services;
 
 namespace WpfApp1.ViewModels
 {
@@ -19,18 +20,22 @@ namespace WpfApp1.ViewModels
         public ICommand DelTodoCommand {  get; set; }
         public TodoItem SelectedTodo { get; set; }
 
+        private readonly TodoStorageService _storage;
         public MainViewModel() {
+            _storage = new TodoStorageService();
             Title = "Personal DashBoard";
 
-            Todos = new ObservableCollection<TodoItem> { 
-                new TodoItem {Title = "운동하기"},
-                new TodoItem {Title = "아침식사 준비하기"},
-                new TodoItem {Title = "세탁기 정리하기"},
-            };
+            Todos = _storage.Load();
+
+            //초기 임시데이터
+            //Todos = new ObservableCollection<TodoItem> { 
+            //    new TodoItem {Title = "운동하기"},
+            //    new TodoItem {Title = "아침식사 준비하기"},
+            //    new TodoItem {Title = "세탁기 정리하기"},
+            //};
 
             AddTodoCommand = new RelayCommand(AddTodo);
             DelTodoCommand = new RelayCommand(DelTodo);
-
         }
 
         private void AddTodo(object parameter)
@@ -41,6 +46,7 @@ namespace WpfApp1.ViewModels
                 {
                     Title = NewTodo
                 });
+                _storage.Save(Todos);
             }
         }
 
@@ -51,8 +57,9 @@ namespace WpfApp1.ViewModels
             if (todo != null)
             {
                 Todos.Remove(todo);
+                _storage.Save(Todos);
             }
         }
-
+       
     }
 }
