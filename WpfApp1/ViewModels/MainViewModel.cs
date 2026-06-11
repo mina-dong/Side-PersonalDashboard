@@ -8,6 +8,7 @@ using WpfApp1.Models;
 using System.Windows.Input;
 using WpfApp1.Commands;
 using WpfApp1.Services;
+using System.ComponentModel;
 
 namespace WpfApp1.ViewModels
 {
@@ -26,6 +27,10 @@ namespace WpfApp1.ViewModels
             Title = "Personal DashBoard";
 
             Todos = _storage.Load();
+            foreach (var todo in Todos)
+            {
+                todo.PropertyChanged += Todo_PropertyChanged;
+            }
 
             //초기 임시데이터
             //Todos = new ObservableCollection<TodoItem> { 
@@ -60,6 +65,9 @@ namespace WpfApp1.ViewModels
                 _storage.Save(Todos);
             }
         }
-       
+        private void Todo_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            _storage.Save(Todos);
+        }
     }
 }
