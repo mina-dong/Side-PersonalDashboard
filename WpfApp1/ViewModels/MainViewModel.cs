@@ -19,9 +19,12 @@ namespace WpfApp1.ViewModels
         public ObservableCollection<TodoItem> Todos { get; set; }
         public ICommand AddTodoCommand { get; set; }
         public ICommand DelTodoCommand {  get; set; }
+        
         public TodoItem SelectedTodo { get; set; }
 
         private readonly TodoStorageService _storage;
+        public string CurrentDate => DateTime.Now.ToString("yyyy-MM-dd");
+
         public MainViewModel() {
             _storage = new TodoStorageService();
             Title = "Personal DashBoard";
