@@ -9,10 +9,11 @@ using System.Windows.Input;
 using WpfApp1.Commands;
 using WpfApp1.Services;
 using System.ComponentModel;
+using System.Windows;
 
 namespace WpfApp1.ViewModels
 {
-    internal class MainViewModel
+    internal class MainViewModel : INotifyPropertyChanged
     {
         public string Title { get; set; }
         public string NewTodo { get; set; }
@@ -22,11 +23,47 @@ namespace WpfApp1.ViewModels
         
         public TodoItem SelectedTodo { get; set; }
 
+        private string _weatherText;
+
+        public string WeatherText
+        {
+            get => _weatherText;
+            set
+            {
+                _weatherText = value;
+                OnPropertyChanged(nameof(WeatherText));
+            }
+        }
+
+        private double _temperature;
+
+        public double Temperature
+        {
+            get => _temperature;
+            set
+            {
+                _temperature = value;
+                OnPropertyChanged(nameof(Temperature));
+            }
+        }
+
         private readonly TodoStorageService _storage;
+        private readonly WeatherService _weatherService;
         public string CurrentDate => DateTime.Now.ToString("yyyy-MM-dd");
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(
+                this,
+                new PropertyChangedEventArgs(propertyName));
+        }
 
         public MainViewModel() {
             _storage = new TodoStorageService();
+            _weatherService = new WeatherService();
+
             Title = "Personal DashBoard";
 
             Todos = _storage.Load();
@@ -34,7 +71,7 @@ namespace WpfApp1.ViewModels
             {
                 todo.PropertyChanged += Todo_PropertyChanged;
             }
-
+            
             //초기 임시데이터
             //Todos = new ObservableCollection<TodoItem> { 
             //    new TodoItem {Title = "운동하기"},
@@ -44,7 +81,22 @@ namespace WpfApp1.ViewModels
 
             AddTodoCommand = new RelayCommand(AddTodo);
             DelTodoCommand = new RelayCommand(DelTodo);
+
+            _ = LoadWeather();
+
         }
+
+        private async Task LoadWeather()
+        {
+            WeatherInfo weather =
+                await _weatherService.GetWeatherAsync();
+
+            Temperature = weather.Temperature;
+
+            WeatherText =
+                _weatherService.GetWeatherDescription(weather.WeatherCode);
+        }
+
 
         private void AddTodo(object parameter)
         {
