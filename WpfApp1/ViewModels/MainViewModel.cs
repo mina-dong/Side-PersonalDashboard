@@ -47,8 +47,11 @@ namespace WpfApp1.ViewModels
             }
         }
 
+        public TreeInfo Tree { get; set; }
+
         private readonly TodoStorageService _storage;
         private readonly WeatherService _weatherService;
+        private readonly TreeStorageService _treeStorage;
         public string CurrentDate => DateTime.Now.ToString("yyyy-MM-dd");
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -63,6 +66,8 @@ namespace WpfApp1.ViewModels
         public MainViewModel() {
             _storage = new TodoStorageService();
             _weatherService = new WeatherService();
+            _treeStorage = new TreeStorageService();
+            Tree = _treeStorage.Load();
 
             Title = "Personal DashBoard";
 
@@ -119,7 +124,25 @@ namespace WpfApp1.ViewModels
                 Todos.Remove(todo);
                 _storage.Save(Todos);
             }
+
+            if (todo.IsDone)
+            {
+                Tree.Exp += 10;
+
+                //100 채우면 경험치 초기화 + 레벨업
+                if (Tree.Exp >= 100)
+                {
+                    Tree.Level++;
+                    Tree.Exp = 0;
+                }
+
+                MessageBox.Show("나무 저장!");
+                _treeStorage.Save(Tree);
+            }
+            Todos.Remove(todo);
+            _storage.Save(Todos);
         }
+
         private void Todo_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _storage.Save(Todos);

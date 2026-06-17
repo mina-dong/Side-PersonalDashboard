@@ -60,8 +60,10 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Models\TodoItem.cs" />
+    <Compile Include="Models\TreeInfo.cs" />
     <Compile Include="Models\WeatherInfo.cs" />
     <Compile Include="Models\WeatherResponse.cs" />
+    <Compile Include="Services\TreeStorageService.cs" />
     <Compile Include="Services\TodoStorageService.cs" />
     <Compile Include="Services\WeatherService.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
