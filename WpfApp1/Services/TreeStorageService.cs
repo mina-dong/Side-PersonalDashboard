@@ -26,7 +26,6 @@ namespace WpfApp1.Services
             {
                 return new TreeInfo
                 {
-                    Level = 1,
                     Exp = 0
                 };
             }
@@ -36,7 +35,6 @@ namespace WpfApp1.Services
             return JsonConvert.DeserializeObject<TreeInfo>(json)
                    ?? new TreeInfo
                    {
-                       Level = 1,
                        Exp = 0
                    };
         }

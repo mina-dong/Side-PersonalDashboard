@@ -31,6 +31,12 @@
             <TextBlock Text="{Binding WeatherText}"
                FontSize="14"/>
 
+            <TextBlock Text="{Binding Tree.Level,
+                              StringFormat=Lv.{0}}" />
+
+            <TextBlock Text="{Binding Tree.Exp,
+                              StringFormat=EXP : {0}}" />
+
         </StackPanel>
 
 

@@ -10,6 +10,7 @@ using WpfApp1.Commands;
 using WpfApp1.Services;
 using System.ComponentModel;
 using System.Windows;
+using Newtonsoft.Json;
 
 namespace WpfApp1.ViewModels
 {
@@ -125,20 +126,27 @@ namespace WpfApp1.ViewModels
                 _storage.Save(Todos);
             }
 
+
             if (todo.IsDone)
             {
                 Tree.Exp += 10;
-
-                //100 채우면 경험치 초기화 + 레벨업
-                if (Tree.Exp >= 100)
-                {
-                    Tree.Level++;
-                    Tree.Exp = 0;
-                }
-
-                MessageBox.Show("나무 저장!");
                 _treeStorage.Save(Tree);
             }
+            //모델안에 넣어서 주석처리
+            //if (todo.IsDone)
+            //{
+            //    Tree.Exp += 10;
+
+            //    //100 채우면 경험치 초기화 + 레벨업
+            //    if (Tree.Exp >= 100)
+            //    {
+            //        Tree.Level++;
+            //        Tree.Exp = 0;
+            //    }
+            //    //Json 저장여부 확인
+            //    //MessageBox.Show("나무 저장!");
+            //    _treeStorage.Save(Tree);
+            //}
             Todos.Remove(todo);
             _storage.Save(Todos);
         }
