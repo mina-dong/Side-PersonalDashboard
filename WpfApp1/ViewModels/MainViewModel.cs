@@ -70,7 +70,7 @@ namespace WpfApp1.ViewModels
             _treeStorage = new TreeStorageService();
             Tree = _treeStorage.Load();
 
-            Title = "Personal DashBoard";
+            Title = "오늘의 할일";
 
             Todos = _storage.Load();
             foreach (var todo in Todos)

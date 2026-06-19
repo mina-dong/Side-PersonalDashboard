@@ -5,96 +5,197 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <!-- 그리드를 몇 행으로 나눌지 자동으로 설정 -->
+        Title="오늘의 할일"
+        Height="600"
+        Width="450"
+        ResizeMode="NoResize"
+        Background="#F6F8FB">
+
+    <Grid Margin="15">
+
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        
+
+        <!-- 제목 -->
         <TextBlock Grid.Row="0"
-            Text="{Binding Title}"
-                FontSize="24"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"/>
+                   Text="{Binding Title}"
+                   FontSize="28"
+                   FontWeight="Bold"
+                   Foreground="#1E293B"
+                   HorizontalAlignment="Center"
+                   Margin="0,10,0,20"/>
 
-        <StackPanel Grid.Row="0"
-            HorizontalAlignment="Right"
-            Margin="0,10,20,0">
+        <!-- 날씨 / 날짜 / 나무 -->
+        <Border Grid.Row="1"
+                Background="White"
+                CornerRadius="15"
+                Padding="15"
+                Margin="0,0,0,15">
 
-            <TextBlock Text="{Binding CurrentDate}"
-               FontSize="14"/>
+            <Grid>
 
-            <TextBlock Text="{Binding WeatherText}"
-               FontSize="14"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Tree.Level,
-                              StringFormat=Lv.{0}}" />
+                <!-- 왼쪽 -->
+                <StackPanel>
 
-            <TextBlock Text="{Binding Tree.Exp,
-                              StringFormat=EXP : {0}}" />
+                    <TextBlock Text="{Binding CurrentDate}"
+                               FontSize="15"
+                               Foreground="#64748B"/>
 
-        </StackPanel>
+                    <TextBlock Text="{Binding WeatherText}"
+                               FontSize="16"
+                               FontWeight="SemiBold"
+                               Margin="0,5,0,0"/>
 
+                </StackPanel>
 
+                <!-- 오른쪽 -->
+                <StackPanel Grid.Column="1"
+                            HorizontalAlignment="Right">
 
-        <StackPanel Grid.Row="1"
-                Orientation="Horizontal"
-                Margin="10">
+                    <TextBlock Text="🌱"
+                               FontSize="30"
+                               HorizontalAlignment="Center"/>
 
-            <TextBox 
-                Width="300"
-                Height="30"
-                MaxLength="50"
-                 Text="{Binding NewTodo}"/>
+                    <TextBlock Text="{Binding Tree.Level,
+                                              StringFormat=Lv.{0}}"
+                               FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
 
-            <Button Content="추가"
-                Width="80"
-                Height="30"
-                Margin="10,0,0,0"
-                Command="{Binding AddTodoCommand}"/>
+                    <TextBlock Text="{Binding Tree.Exp,
+                                              StringFormat=EXP {0}}"
+                               FontSize="12"
+                               HorizontalAlignment="Center"/>
 
-        </StackPanel>
-        
+                </StackPanel>
 
-        <ListBox Grid.Row="2"
-             Margin="10"
-             ItemsSource="{Binding Todos}"
-             SelectedItem="{Binding SelectedTodo}">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
+            </Grid>
 
-                        <CheckBox IsChecked="{Binding IsDone}"/>
+        </Border>
 
-                        <TextBlock Text="{Binding Title}"
-                           Margin="10,0,0,0">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Style.Triggers>
+        <!-- 입력 영역 -->
+        <Border Grid.Row="2"
+                Background="White"
+                CornerRadius="15"
+                Padding="12"
+                Margin="0,0,0,15">
 
-                                        <DataTrigger Binding="{Binding IsDone}" Value="True">
-                                            <Setter Property="TextDecorations" Value="Strikethrough"/>
-                                            <Setter Property="Opacity" Value="0.5"/>
-                                        </DataTrigger>
+            <Grid>
 
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
-                        <Button Content="삭제"
-                            Margin="10,0,0,0"
-                            Command="{Binding DataContext.DelTodoCommand,
-                                      RelativeSource={RelativeSource AncestorType=Window}}"
-                            CommandParameter="{Binding}" />
+                <TextBox Grid.Column="0"
+                         Height="35"
+                         FontSize="14"
+                         Padding="10,5"
+                         Text="{Binding NewTodo}" />
 
-                    </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                <Button Grid.Column="1"
+                        Content="+"
+                        Width="40"
+                        Height="35"
+                        Margin="10,0,0,0"
+                        FontSize="18"
+                        FontWeight="Bold"
+                        Background="#3B82F6"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Command="{Binding AddTodoCommand}" />
+
+            </Grid>
+
+        </Border>
+
+        <!-- Todo 목록 -->
+        <Border Grid.Row="3"
+                Background="White"
+                CornerRadius="15"
+                Padding="10">
+
+            <ListBox ItemsSource="{Binding Todos}"
+                     SelectedItem="{Binding SelectedTodo}"
+                     BorderThickness="0"
+                     Background="Transparent"
+                     HorizontalContentAlignment="Stretch">
+                
+
+                <ListBox.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <Grid Margin="5">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <CheckBox Grid.Column="0"
+                                      VerticalAlignment="Center"
+                                      IsChecked="{Binding IsDone}"/>
+
+                            <TextBlock Grid.Column="1"
+                                       Margin="10,0"
+                                       VerticalAlignment="Center"
+                                       Text="{Binding Title}">
+
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+
+                                        <Style.Triggers>
+
+                                            <DataTrigger Binding="{Binding IsDone}"
+                                                         Value="True">
+
+                                                <Setter Property="TextDecorations"
+                                                        Value="Strikethrough"/>
+
+                                                <Setter Property="Opacity"
+                                                        Value="0.5"/>
+
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+
+                                    </Style>
+                                </TextBlock.Style>
+
+                            </TextBlock>
+
+                            <Button Grid.Column="2"
+                                    Content="✕"
+                                    Width="25"
+                                    Height="25"
+                                    FontSize="12"
+                                    Foreground="White"
+                                    Background="#EF4444"
+                                    BorderThickness="0"
+                                    Command="{Binding DataContext.DelTodoCommand,
+                                              RelativeSource={RelativeSource AncestorType=Window}}"
+                                    CommandParameter="{Binding}" />
+
+                        </Grid>
+
+                    </DataTemplate>
+
+                </ListBox.ItemTemplate>
+
+            </ListBox>
+
+        </Border>
+
     </Grid>
+
 </Window>
