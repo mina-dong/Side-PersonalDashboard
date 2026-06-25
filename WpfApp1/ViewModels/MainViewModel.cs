@@ -71,7 +71,7 @@ namespace WpfApp1.ViewModels
             Tree = _treeStorage.Load();
 
             Title = "오늘의 할일";
-
+            
             Todos = _storage.Load();
             foreach (var todo in Todos)
             {
